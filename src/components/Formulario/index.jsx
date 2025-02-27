@@ -1,54 +1,67 @@
- import { useState } from "react";
- 
- const Formulario = () => {
-    let [pesoAtual, setPesoAtual] = useState(0);
-    let [altura, setAltura] = useState(0);
+import { useState } from "react";
+import styles from './Formulario.module.css';
 
-    const renderizaResultado = () => {
-        const media = pesoAtual / (altura * 2);
-    
-    if(media <18,5) {
-        return (
-            <p>Você está abaixo do peso</p>
-        )
-      
-    } else if(media> 18,5 && media <24,9) {
-        return (
-            <p>Você está com peso normal</p>
-        )
-    } else if (media> 25 && media <30 ){
-        return (
-            <p>Você está com sobrepeso</p>
-        )
-    } else{
-        return (
-            <p>Você está obeso</p>
-        )
-    
-    }
-    
-    }
+const Formulario = () => {
+  let [pesoAtual, setPesoAtual] = useState("");
+  let [altura, setAltura] = useState("");
+  let [valorIMC, setValorIMC] = useState(0);
+  let [resultadoIMC, setResultadoIMC] = useState("");
 
-     return (
-        <div className="container">
-            <h1> Calculadora IMC</h1>        
-           <form>
-            <input type="number" placeholder="Peso" onChange={evento =>setPesoAtual(parseFloat(evento.target.value))} />
-            <input type="number" placeholder="Altura" onChange={evento =>setAltura(parseFloat(evento.target.value))} />
-            <button type="submit">Calcular</button>
-            {renderizaResultado()}
+  const calcularIMC = (e) => {
+    e.preventDefault(); // Previne o comportamento padrão do formulário
+
+    const peso = parseFloat(pesoAtual);
+    const alturaMetros = parseFloat(altura);
+
+    if (peso > 0 && alturaMetros > 0) {
+      const imc = peso / (alturaMetros * alturaMetros);
+      setValorIMC(imc);
+
+      if (imc < 18.5) {
+        setResultadoIMC("Você está abaixo do peso");
+      } else if (imc >= 18.5 && imc < 24.9) {
+        setResultadoIMC("Você está com peso normal");
+      } else if (imc >= 25 && imc < 30) {
+        setResultadoIMC("Você está com sobrepeso");
+      } else {
+        setResultadoIMC("Você está obeso");
+      }
+    } else {
+      setResultadoIMC("Por favor, insira valores válidos para peso e altura.");
+    }
+  };
+  return (
+    
+     <>
+        <form className={styles.container} onSubmit={calcularIMC}>
+          <h1>Calculadora IMC</h1>
+          <label className={styles.label}>Peso (kg)</label>
+          <input className={styles.input}
+            type="number"
+            placeholder="Peso"
+            value={pesoAtual}
+            onChange={(evento) => setPesoAtual(evento.target.value)}
+          />
+          <br />
+          <label className={styles.label}>Altura (m)</label>
+          <input className={styles.input}
+            type="number"
+            placeholder="Altura"
+            value={altura}
+            onChange={(evento) => setAltura(evento.target.value)}
+          />
+          <br />
+          <button className={styles.button} type="submit">Calcular</button>
         </form>
-        <>   
-            <h3>Seu IMC é: </h3>
-        </>
-        </div>
- )
+        {valorIMC > 0 && (
+          <div className={styles.resultado}>
+            <h3>Seu IMC é: {valorIMC.toFixed(2)}</h3>
+            <p>{resultadoIMC}</p>
+          </div>
+        )}
+     
+    </>
+  );
+};
 
-
-}
-
-
-
-
-
-export default Formulario
+export default Formulario;
