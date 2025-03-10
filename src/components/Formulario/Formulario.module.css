@@ -12,6 +12,7 @@
  
     border-left: ridge 30px;
     border-color:#eb5a0075;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)
    
  
   

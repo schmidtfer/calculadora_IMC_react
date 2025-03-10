@@ -8,7 +8,7 @@ const Formulario = () => {
   let [resultadoIMC, setResultadoIMC] = useState("");
 
   const calcularIMC = (e) => {
-    e.preventDefault(); // Previne o comportamento padrão do formulário
+    e.preventDefault(); 
 
     const peso = parseFloat(pesoAtual);
     const alturaMetros = parseFloat(altura);
